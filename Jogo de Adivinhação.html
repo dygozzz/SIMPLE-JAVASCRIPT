@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Jogo de Adivinhação</title>
+  <style>
+    body {
+      background-color: #f3f3f3;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    #container {
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    #guess-input {
+      padding: 8px;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    #result {
+      margin-top: 10px;
+      font-size: 18px;
+    }
+
+    #new-game {
+      margin-top: 20px;
+      background-color: #555;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h1>Jogo de Adivinhação</h1>
+    <p>Pense em um número de 1 a 100</p>
+    <input type="text" id="guess-input" placeholder="Digite seu palpite">
+    <button id="submit">Enviar</button>
+    <div id="result"></div>
+    <button id="new-game">Iniciar Novo Jogo</button>
+  </div>
+
+  <script>
+    const guessInput = document.getElementById("guess-input");
+    const submitButton = document.getElementById("submit");
+    const resultDiv = document.getElementById("result");
+    const newGameButton = document.getElementById("new-game");
+
+    let randomNumber;
+    let attempts;
+
+    newGame();
+
+    submitButton.addEventListener("click", checkGuess);
+    newGameButton.addEventListener("click", newGame);
+
+    function newGame() {
+      randomNumber = Math.floor(Math.random() * 100) + 1;
+      attempts = 0;
+      resultDiv.innerHTML = "";
+      guessInput.value = "";
+      guessInput.disabled = false;
+      submitButton.disabled = false;
+      guessInput.focus();
+    }
+
+    function checkGuess() {
+      const guess = parseInt(guessInput.value);
+      attempts++;
+
+      if (isNaN(guess) || guess < 1 || guess > 100) {
+        resultDiv.innerHTML = "Por favor, digite um número válido entre 1 e 100";
+      } else if (guess < randomNumber) {
+        resultDiv.innerHTML = "Tente um número maior";
+      } else if (guess > randomNumber) {
+        resultDiv.innerHTML = "Tente um número menor";
+      } else {
+        resultDiv.innerHTML = `Parabéns! Você acertou o número em ${attempts} tentativas.`;
+        guessInput.disabled = true;
+        submitButton.disabled = true;
+      }
+
+      guessInput.value = "";
+      guessInput.focus();
+    }
+  </script>
+</body>
+</html>
